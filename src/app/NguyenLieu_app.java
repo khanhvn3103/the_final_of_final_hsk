@@ -257,7 +257,7 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 		lblNewLabel_15.setBounds(10, 251, 135, 29);
 		panel_2.add(lblNewLabel_15);
 		
-		String[] donVi = {"Kg","chai","lít","thùng"};
+		String[] donVi = {"kg","chai","thùng","túi"};
 		
 //		donvicombobox = new DefaultComboBoxModel<String>(donVi);
 		

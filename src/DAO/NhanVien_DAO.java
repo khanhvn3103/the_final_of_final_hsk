@@ -1,12 +1,14 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import ConnectDB.ConnectDB;
+import Entity.HoaDon;
 import Entity.NhanVien;
 import Entity.TaiKhoan;
 
@@ -36,5 +38,32 @@ public class NhanVien_DAO {
 			e.printStackTrace();
 		}
 		return dsnv;
+	}
+	
+	public boolean insert(NhanVien nv) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n =0;
+		try {
+			stmt = con.prepareStatement("insert into" + " NHANVIEN values (?,?,?,?,?,?,?)");
+			stmt.setString(1, nv.getMaNhanVien());
+			stmt.setString(2, nv.getTenNhanVien());
+			stmt.setString(3, nv.getDiaChi());
+			stmt.setString(4, nv.getSoDienThoai());
+			stmt.setDouble(5, nv.getLuong());
+			stmt.setString(6,nv.getChucVu());
+			stmt.setString(7,nv.getTaiKhoan().getTaiKhoan());
+			n = stmt.executeUpdate();
+		} catch(SQLException e) {
+			throw new IllegalArgumentException(e);
+		} finally {
+			try {
+				stmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return n>0;
 	}
 }

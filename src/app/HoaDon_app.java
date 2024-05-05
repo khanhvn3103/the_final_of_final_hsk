@@ -30,6 +30,9 @@ import DAO.The_DAO;
 import Entity.ChiTietHoaDon;
 import Entity.DoUong;
 import Entity.HoaDon;
+import Entity.KhachHang;
+import Entity.NhanVien;
+import Entity.The;
 
 import javax.swing.JTextField;
 import javax.swing.JViewport;
@@ -39,6 +42,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import javax.swing.JComboBox;
@@ -65,6 +69,13 @@ public class HoaDon_app extends JFrame {
 	private HoaDon_DAO hd_dao;
 	private ChiTietHoaDon_DAO cthd_dao;
 	private JPanel panel_3;
+	private JComboBox cboHD;
+	private JComboBox cboKH;
+	private JComboBox cboDU;
+	private JComboBox cboNV;
+	private KhachHang_DAO kh_dao;
+	private DoUong_DAO du_dao;
+	private NhanVien_DAO nv_dao;
 
 	/**
 	 * Launch the application.
@@ -94,6 +105,9 @@ public class HoaDon_app extends JFrame {
 		}
 		hd_dao=new HoaDon_DAO();
 		cthd_dao=new ChiTietHoaDon_DAO();
+		kh_dao = new KhachHang_DAO();
+		du_dao = new DoUong_DAO();
+		nv_dao = new NhanVien_DAO();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1662, 907);
@@ -269,9 +283,13 @@ public class HoaDon_app extends JFrame {
 		lblNewLabel_13.setBounds(10, 227, 269, 25);
 		panel_3.add(lblNewLabel_13);
 		
-		JComboBox cboDU = new JComboBox();
+		cboDU = new JComboBox();
 		cboDU.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
 		cboDU.setBounds(10, 263, 269, 25);
+		ArrayList<DoUong> listdu = du_dao.getAllTableDoUong();
+		for (DoUong du : listdu) {
+			cboDU.addItem(du.getMaDoUong());
+		}
 		panel_3.add(cboDU);
 		
 		JLabel lblNewLabel_14 = new JLabel("Mã nhân viên :");
@@ -279,12 +297,64 @@ public class HoaDon_app extends JFrame {
 		lblNewLabel_14.setBounds(10, 299, 269, 25);
 		panel_3.add(lblNewLabel_14);
 		
-		JComboBox cboNV = new JComboBox();
+		cboNV = new JComboBox();
 		cboNV.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
 		cboNV.setBounds(10, 335, 269, 25);
+		ArrayList<NhanVien> listnv = nv_dao.getAllTableNhanVien();
+		for (NhanVien nv : listnv) {
+			cboNV.addItem(nv.getMaNhanVien());
+		}
 		panel_3.add(cboNV);
 		
 		tim = new JButton("Tìm");
+		tim.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modelTable.setRowCount(0);
+				int ngay;
+				int thang;
+				int nam;
+				if(day.getSelectedIndex()!=0) {
+					ngay = Integer.parseInt(day.getSelectedItem().toString());
+				}else {
+					ngay = 0;
+				}
+				if(month.getSelectedIndex()!=0) {
+					thang = Integer.parseInt(month.getSelectedItem().toString());
+				}else {
+					thang = 0;
+				}
+				if(year.getSelectedIndex()!=0) {
+					nam = Integer.parseInt(year.getSelectedItem().toString());
+				}else {
+					nam = 0;
+				}
+				String nv;
+				if(cboNV.getSelectedIndex()!=0) {
+					nv = cboNV.getSelectedItem().toString();
+				}else {
+					nv = null;
+				}
+				String kh;
+				if(cboKH.getSelectedIndex()!=0) {
+					kh = cboKH.getSelectedItem().toString();
+				}else {
+					kh = null;
+				}
+				String hd;
+				if(cboHD.getSelectedIndex()!=0) {
+					hd = cboHD.getSelectedItem().toString();
+				}else {
+					hd = null;
+				}
+				String du;
+				if(cboDU.getSelectedIndex()!=0) {
+					du = cboDU.getSelectedItem().toString();
+				}else {
+					du = null;
+				}
+				search(ngay,thang,nam,nv,kh,hd,du);
+			}
+		});
 		tim.setBackground(new Color(255, 0, 0));
 		tim.setForeground(new Color(255, 255, 255));
 		tim.setOpaque(true);
@@ -292,14 +362,22 @@ public class HoaDon_app extends JFrame {
 		tim.setBounds(10, 710, 269, 78);
 		panel_3.add(tim);
 		
-		JComboBox cboHD = new JComboBox();
+		cboHD = new JComboBox();
 		cboHD.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
 		cboHD.setBounds(10, 47, 269, 25);
+		ArrayList<HoaDon> listhd = hd_dao.getAllTableHoaDon();
+		for (HoaDon hd : listhd) {
+			cboHD.addItem(hd.getMaHoaDon());
+		}
 		panel_3.add(cboHD);
 		
-		JComboBox cboKH = new JComboBox();
+		cboKH = new JComboBox();
 		cboKH.setModel(new DefaultComboBoxModel(new String[] {"Tất cả"}));
 		cboKH.setBounds(10, 119, 269, 25);
+		ArrayList<KhachHang> listkh = kh_dao.getAllTableKhachHang();
+		for (KhachHang kh : listkh) {
+			cboKH.addItem(kh.getMaKhachHang());
+		}
 		panel_3.add(cboKH);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -360,19 +438,19 @@ public class HoaDon_app extends JFrame {
 		String[] monthsHave31 = {"1", "3", "5", "7","8","10","12"};
 		if(year.getSelectedItem().toString().equals("2024") && month.getSelectedItem().toString().equals("2")) {
 			String index = day.getSelectedItem().toString();
-			day.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29"}));
+			day.setModel(new DefaultComboBoxModel(new String[] {"Tất cả","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29"}));
 			day.setSelectedItem(index);
 		} else if (year.getSelectedItem().toString().equals("2023") && month.getSelectedItem().toString().equals("2")) {
 			String index = day.getSelectedItem().toString();
-			day.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"}));
+			day.setModel(new DefaultComboBoxModel(new String[] {"Tất cả","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"}));
 			day.setSelectedItem(index);
 		} else if (Arrays.asList(monthsHave30).contains(month.getSelectedItem().toString())) {
 			String index = day.getSelectedItem().toString();
-			day.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29","30"}));
+			day.setModel(new DefaultComboBoxModel(new String[] {"Tất cả","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29","30"}));
 			day.setSelectedItem(index);
 		} else if (Arrays.asList(monthsHave31).contains(month.getSelectedItem().toString())) {
 			String index = day.getSelectedItem().toString();
-			day.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29","30","31"}));
+			day.setModel(new DefaultComboBoxModel(new String[] {"Tất cả","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29","30","31"}));
 			day.setSelectedItem(index);
 		}
 	}
@@ -386,4 +464,18 @@ public class HoaDon_app extends JFrame {
 			}
 		}
 	}
+	
+	private void search(int ngay, int thang, int nam, String nv,String kh,String hd,String du) {
+		List<HoaDon> listhd = hd_dao.search(ngay, thang, nam, nv,kh,hd);
+		List<ChiTietHoaDon> listct = cthd_dao.search(hd, du);
+		for (HoaDon hd1 : listhd) {
+			for (ChiTietHoaDon ct1 : listct) {
+				modelTable.addRow(new Object[] {hd1.getMaHoaDon(),hd1.getTongTien(),hd1.getNgayBan(),hd1.getMaNhanVien().getMaNhanVien(),hd1.getMaKhachHang().getMaKhachHang(),hd1.getSoThe().getSoThe(),ct1.getMaDoUong().getMaDoUong(),ct1.getSoLuong(),ct1.getDonGia()});
+			}
+		}
+	}
+//	"Mã hóa đơn", "Tổng tiền", "Ngày bán","Mã nhân viên","Mã khách hàng","Số thẻ","Mã đồ uống","Số lượng","Đơn giá"
+//	modelTable.addRow(new Object[] { hd1.getMaHoaDon(), hd1.getTongTien(), hd1.getNgayBan(),
+//			hd1.getMaNhanVien().getMaNhanVien(), hd1.getMaKhachHang().getMaKhachHang(),
+//			hd1.getSoThe().getSoThe() });
 }
