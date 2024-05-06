@@ -125,7 +125,7 @@ public class ThongKeHoaDon extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("  Thống kê hóa đơn");
 		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setOpaque(true);
-		lblNewLabel_2.setBackground(Color.GRAY);
+		lblNewLabel_2.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_2.setBounds(0, 11, 388, 52);
@@ -142,7 +142,7 @@ public class ThongKeHoaDon extends JFrame {
 		});
 		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setOpaque(true);
-		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel_3.setBackground(Color.GRAY);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_3.setBounds(0, 74, 388, 52);
 		body.add(lblNewLabel_3);

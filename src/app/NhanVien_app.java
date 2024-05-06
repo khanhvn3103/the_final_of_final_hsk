@@ -148,7 +148,7 @@ public class NhanVien_app extends JFrame {
 		});
 		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setOpaque(true);
-		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel_3.setBackground(Color.GRAY);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_3.setBounds(0, 74, 388, 52);
 		body.add(lblNewLabel_3);
@@ -156,7 +156,7 @@ public class NhanVien_app extends JFrame {
 		JLabel lblNewLabel_4 = new JLabel("  Tài khoản nhân viên");
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
-		lblNewLabel_4.setBackground(Color.GRAY);
+		lblNewLabel_4.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_4.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_4);

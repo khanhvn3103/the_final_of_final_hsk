@@ -162,7 +162,7 @@ public class HoaDon_app extends JFrame {
 		JLabel lblNewLabel_4 = new JLabel("  Hóa đơn");
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
-		lblNewLabel_4.setBackground(Color.GRAY);
+		lblNewLabel_4.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_4.setBounds(0, 74, 388, 52);
 		body.add(lblNewLabel_4);
@@ -178,7 +178,7 @@ public class HoaDon_app extends JFrame {
 		});
 		lblNewLabel_5.setForeground(Color.BLACK);
 		lblNewLabel_5.setOpaque(true);
-		lblNewLabel_5.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel_5.setBackground(Color.GRAY);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_5.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_5);

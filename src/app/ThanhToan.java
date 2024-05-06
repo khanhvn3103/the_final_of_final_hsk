@@ -175,7 +175,7 @@ public class ThanhToan extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("  Bán hàng");
 		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setOpaque(true);
-		lblNewLabel_2.setBackground(Color.GRAY);
+		lblNewLabel_2.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_2.setBounds(0, 11, 388, 52);
@@ -208,7 +208,7 @@ public class ThanhToan extends JFrame {
 		});
 		lblNewLabel_5.setForeground(Color.BLACK);
 		lblNewLabel_5.setOpaque(true);
-		lblNewLabel_5.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel_5.setBackground(Color.GRAY);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_5.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_5);

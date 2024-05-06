@@ -165,7 +165,7 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 		});
 		lblNewLabel_5.setForeground(Color.BLACK);
 		lblNewLabel_5.setOpaque(true);
-		lblNewLabel_5.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel_5.setBackground(Color.GRAY);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_5.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_5);
@@ -173,7 +173,7 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 		JLabel lblNewLabel_6 = new JLabel("  Nguyên liệu");
 		lblNewLabel_6.setForeground(Color.BLACK);
 		lblNewLabel_6.setOpaque(true);
-		lblNewLabel_6.setBackground(Color.GRAY);
+		lblNewLabel_6.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_6.setBounds(0, 200, 388, 52);
 		body.add(lblNewLabel_6);
