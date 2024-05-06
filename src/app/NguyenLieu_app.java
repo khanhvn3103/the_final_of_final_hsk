@@ -395,7 +395,7 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 	}
 	
 	private void docDuLieuDatabaseVaoTable() {
-		List<NguyenLieu> list = nl_dao.getAllTableKhachHang();
+		List<NguyenLieu> list = nl_dao.getAllTableNguyenLieu();
 		for (NguyenLieu nl:list) {
 			modelTable.addRow(new Object[] {nl.getMaNguyenLieu(), nl.getTenNguyenLieu(), nl.getSoLuong(), nl.getDonVi()});
 		}

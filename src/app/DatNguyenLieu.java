@@ -239,21 +239,30 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 		panel_3.add(comboBox2);
 		docDuLieuDatacbb("donVi");
 		
-		 dat = new JButton("Đặt");
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(comboBox.getSelectedItem().equals("Đường") || comboBox.getSelectedItem().equals("Cà chua") ||comboBox.getSelectedItem().equals("Cà rốt") || comboBox.getSelectedItem().equals("Socola") || comboBox.getSelectedItem().equals("Hạt cà phê"))
+					comboBox2.setSelectedIndex(1);
+				else if(comboBox.getSelectedItem().equals("Sữa Tươi") || comboBox.getSelectedItem().equals("Cream") ||comboBox.getSelectedItem().equals("Bột kem") || comboBox.getSelectedItem().equals("Sữa đặc") || comboBox.getSelectedItem().equals("Siro"))
+					comboBox2.setSelectedIndex(0);
+				else if(comboBox.getSelectedItem().equals("Nước Ngọt") || comboBox.getSelectedItem().equals("Đá") ||comboBox.getSelectedItem().equals("Sữa chua"))
+					comboBox2.setSelectedIndex(2);
+				else if(comboBox.getSelectedItem().equals("Bột sữa") || comboBox.getSelectedItem().equals("Cacao") ||comboBox.getSelectedItem().equals("Trà sen"))
+					comboBox2.setSelectedIndex(3);
+			}
+		});
+		
+		dat = new JButton("Đặt");
 		dat.setForeground(Color.WHITE);
 		dat.setFont(new Font("Tahoma", Font.BOLD, 20));
 		dat.setBackground(Color.RED);
 		dat.setBounds(10, 586, 202, 78);
 		panel_3.add(dat);
 		
-		JLabel lblNewLabel_5 = new JLabel("Tìm kiếm theo tên :");
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_5.setBounds(10, 510, 121, 14);
-		panel_3.add(lblNewLabel_5);
-		
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField.setBounds(10, 535, 155, 20);
+		textField.setVisible(false);
 		panel_3.add(textField);
 		textField.setColumns(10);
 		
@@ -292,8 +301,6 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 				int row = table.getSelectedRow();
 		        if (row >= 0) {
 		        	comboBox.setSelectedIndex(row);
-		        	comboBox2.setSelectedIndex(row);
-
 		        }
 			}
 		});
@@ -302,19 +309,22 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 	}
 	
 	private void docDuLieuDatacbb(String type) {
-	    List<NguyenLieu> list = nl_dao.getAllTableKhachHang();
-	    for (NguyenLieu nv : list) {
-	        if (type.equals("tenNguyenLieu")) {
-	            comboBox.addItem(nv.getTenNguyenLieu());
-	        } else if (type.equals("donVi")) {
-	            comboBox2.addItem(nv.getDonVi());
-	        }
-	    }
+		if (type.equals("tenNguyenLieu")) {
+			List<NguyenLieu> list = nl_dao.getAllTableNguyenLieu();
+			for (NguyenLieu nv : list) {
+				comboBox.addItem(nv.getTenNguyenLieu());
+		    }
+        } else if (type.equals("donVi")) {
+        	List<String> list = nl_dao.getDonVi();
+        	for (String nl : list) {
+				comboBox2.addItem(nl);
+		    }
+        }
 	}
 
 	
 	private void docDuLieuDatabaseVaoTable() {
-		List<NguyenLieu> list = nl_dao.getAllTableKhachHang();
+		List<NguyenLieu> list = nl_dao.getAllTableNguyenLieu();
 		for (NguyenLieu nl:list) {
 			modelTable.addRow(new Object[] {nl.getMaNguyenLieu(), nl.getTenNguyenLieu(), nl.getSoLuong(), nl.getDonVi()});
 		}
@@ -340,6 +350,7 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 								modelTable.setValueAt(nl.getSoLuong()+ Integer.parseInt(modelTable.getValueAt(row, 2).toString()), row, 2);
 								
 								JOptionPane.showMessageDialog(null, "Cap nhat thanh cong");
+								nhapSL.setText("");
 							}
 				        } catch (Exception e1) {
 				            JOptionPane.showMessageDialog(this, "Số lượng là số");

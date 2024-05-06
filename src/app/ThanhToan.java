@@ -961,6 +961,7 @@ public class ThanhToan extends JFrame {
 						double donGia = Double.parseDouble(modelTable_1.getValueAt(i, 1).toString());
 						ChiTietHoaDon ct = new ChiTietHoaDon(hd1, dU1, soL,donGia);
 						cthd_dao.insert(ct);
+						reset();
 					}
 				}
 			}

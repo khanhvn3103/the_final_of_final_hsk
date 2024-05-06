@@ -11,7 +11,7 @@ import ConnectDB.ConnectDB;
 import Entity.NguyenLieu;
 
 public class NguyenLieu_DAO {
-	public ArrayList<NguyenLieu> getAllTableKhachHang() {
+	public ArrayList<NguyenLieu> getAllTableNguyenLieu() {
 		ArrayList<NguyenLieu> dsnl = new ArrayList<NguyenLieu>();
 		try {
 			ConnectDB.getInstance();
@@ -33,6 +33,26 @@ public class NguyenLieu_DAO {
 			e.printStackTrace();
 		}
 		return dsnl;
+	}
+	
+	public ArrayList<String> getDonVi() {
+		ArrayList<String> donVi = new ArrayList<String>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "select distinct donVi from NGUYENLIEU";
+			Statement statement = con.createStatement();
+			//thuc thi cau lenh sql tra ve doi tuong result
+			ResultSet rs = statement.executeQuery(sql);
+			//duyet tren ket qua tra ve
+			while(rs.next()) {
+				String donVi1 = rs.getString(1);
+				donVi.add(donVi1);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return donVi;
 	}
 	
 //	public static void updateNguyenLieu(NguyenLieu nl) {

@@ -341,8 +341,8 @@ public class NhanVien_app extends JFrame {
 		panel_1.add(panel_5);
 		panel_5.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Thêm");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton them = new JButton("Thêm");
+		them.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ten = nhapTen.getText();
 				String diaChi = nhapDC.getText();
@@ -365,11 +365,11 @@ public class NhanVien_app extends JFrame {
 				modelTable.addRow(new Object[] {nv.getMaNhanVien(),nv.getTenNhanVien(),nv.getDiaChi(),nv.getSoDienThoai(),nv.getLuong(),nv.getTaiKhoan().getTaiKhoan(),nv.getChucVu(),mk});
 			}
 		});
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnNewButton.setBackground(Color.RED);
-		btnNewButton.setBounds(167, 37, 178, 78);
-		panel_5.add(btnNewButton);
+		them.setForeground(Color.WHITE);
+		them.setFont(new Font("Tahoma", Font.BOLD, 20));
+		them.setBackground(Color.RED);
+		them.setBounds(81, 37, 178, 78);
+		panel_5.add(them);
 		
 		JButton btnSa = new JButton("Sửa");
 		btnSa.addActionListener(new ActionListener() {
@@ -406,10 +406,33 @@ public class NhanVien_app extends JFrame {
 		btnSa.setForeground(Color.WHITE);
 		btnSa.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnSa.setBackground(Color.RED);
-		btnSa.setBounds(512, 37, 178, 78);
+		btnSa.setBounds(340, 37, 178, 78);
 		panel_5.add(btnSa);
 		
+		JButton btnLmMi = new JButton("Làm mới");
+		btnLmMi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lamMoi();
+			}
+		});
+		btnLmMi.setForeground(Color.WHITE);
+		btnLmMi.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnLmMi.setBackground(Color.RED);
+		btnLmMi.setBounds(599, 37, 178, 78);
+		panel_5.add(btnLmMi);
+		
 		docDuLieuDatabaseVaoTable();
+	}
+
+	private void lamMoi() {
+		nhapTen.setText("");
+		nhapDC.setText("");
+		nhapLuong.setText("");
+		nhapMK.setText("");
+		nhapTK.setText("");
+		nhapSDT.setText("");
+		table.clearSelection();
+		
 	}
 
 	private void docDuLieuDatabaseVaoTable() {
