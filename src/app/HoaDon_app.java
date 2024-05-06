@@ -85,6 +85,7 @@ public class HoaDon_app extends JFrame {
 			public void run() {
 				try {
 					HoaDon_app frame = new HoaDon_app();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -97,6 +98,7 @@ public class HoaDon_app extends JFrame {
 	 * Create the frame.
 	 */
 	public HoaDon_app() {
+		setTitle("Danh sách hóa đơn");
 		try {
 			ConnectDB.getInstance().connect();
 			System.out.println("Connected!!");
@@ -141,6 +143,14 @@ public class HoaDon_app extends JFrame {
 		body.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("  Bán hàng");
+		lblNewLabel_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ThanhToan app2 = new ThanhToan();
+				app2.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setOpaque(true);
 		lblNewLabel_2.setBackground(Color.GRAY);
@@ -149,36 +159,44 @@ public class HoaDon_app extends JFrame {
 		lblNewLabel_2.setBounds(0, 11, 388, 52);
 		body.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("  Thêm nước");
-		lblNewLabel_3.setForeground(Color.BLACK);
-		lblNewLabel_3.setOpaque(true);
-		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_3.setBounds(0, 74, 388, 52);
-		body.add(lblNewLabel_3);
-		
 		JLabel lblNewLabel_4 = new JLabel("  Hóa đơn");
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
 		lblNewLabel_4.setBackground(Color.GRAY);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_4.setBounds(0, 137, 388, 52);
+		lblNewLabel_4.setBounds(0, 74, 388, 52);
 		body.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("  Khách hàng");
+		lblNewLabel_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				KhachHang_app app0 = new KhachHang_app();
+				app0.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_5.setForeground(Color.BLACK);
 		lblNewLabel_5.setOpaque(true);
 		lblNewLabel_5.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_5.setBounds(0, 200, 388, 52);
+		lblNewLabel_5.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("  Nguyên liệu");
+		lblNewLabel_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NguyenLieu_app app3 = new NguyenLieu_app();
+				app3.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_6.setForeground(Color.BLACK);
 		lblNewLabel_6.setOpaque(true);
 		lblNewLabel_6.setBackground(Color.GRAY);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_6.setBounds(0, 263, 388, 52);
+		lblNewLabel_6.setBounds(0, 200, 388, 52);
 		body.add(lblNewLabel_6);
 		
 		JPanel foot = new JPanel();
@@ -406,33 +424,6 @@ public class HoaDon_app extends JFrame {
 		docDuLieuDatabaseVaoTable();
 	}
 	
-	//phương thức đóng menu
-	protected void closeMenuBar() {
-		int width = 228;
-		int height = 763;
-		for (Component component : panel_2.getComponents()) {
-	        component.setEnabled(true);
-		}
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				for(int i = width;i>0;i--) {
-					sideMenu.setSize(i,height);
-					try {
-						Thread.sleep(2);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				
-				
-			}
-		}).start();
-		
-	}
-	
 	void checkCalender() {
 		String[] monthsHave30 = {"4", "6", "9", "11"};
 		String[] monthsHave31 = {"1", "3", "5", "7","8","10","12"};
@@ -457,8 +448,8 @@ public class HoaDon_app extends JFrame {
 	
 	private void docDuLieuDatabaseVaoTable() {
 		List<HoaDon> listhd = hd_dao.getAllTableHoaDon();
-		List<ChiTietHoaDon> listct = cthd_dao.getAllTableChiTietHoaDon();
 		for (HoaDon hd: listhd) {
+			List<ChiTietHoaDon> listct = cthd_dao.getAllTableChiTietHoaDonByHoaDon(hd.getMaHoaDon());
 			for (ChiTietHoaDon cthd : listct) {
 				modelTable.addRow(new Object[] {hd.getMaHoaDon(),hd.getTongTien(),hd.getNgayBan(),hd.getMaNhanVien().getMaNhanVien(),hd.getMaKhachHang().getMaKhachHang(),hd.getSoThe().getSoThe(),cthd.getMaDoUong().getMaDoUong(),cthd.getSoLuong(),cthd.getDonGia()});
 			}
@@ -467,15 +458,11 @@ public class HoaDon_app extends JFrame {
 	
 	private void search(int ngay, int thang, int nam, String nv,String kh,String hd,String du) {
 		List<HoaDon> listhd = hd_dao.search(ngay, thang, nam, nv,kh,hd);
-		List<ChiTietHoaDon> listct = cthd_dao.search(hd, du);
 		for (HoaDon hd1 : listhd) {
+			List<ChiTietHoaDon> listct = cthd_dao.search(hd, du,hd1.getMaHoaDon());
 			for (ChiTietHoaDon ct1 : listct) {
 				modelTable.addRow(new Object[] {hd1.getMaHoaDon(),hd1.getTongTien(),hd1.getNgayBan(),hd1.getMaNhanVien().getMaNhanVien(),hd1.getMaKhachHang().getMaKhachHang(),hd1.getSoThe().getSoThe(),ct1.getMaDoUong().getMaDoUong(),ct1.getSoLuong(),ct1.getDonGia()});
 			}
 		}
 	}
-//	"Mã hóa đơn", "Tổng tiền", "Ngày bán","Mã nhân viên","Mã khách hàng","Số thẻ","Mã đồ uống","Số lượng","Đơn giá"
-//	modelTable.addRow(new Object[] { hd1.getMaHoaDon(), hd1.getTongTien(), hd1.getNgayBan(),
-//			hd1.getMaNhanVien().getMaNhanVien(), hd1.getMaKhachHang().getMaKhachHang(),
-//			hd1.getSoThe().getSoThe() });
 }

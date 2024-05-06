@@ -20,18 +20,21 @@ import javax.swing.SwingConstants;
 
 import ConnectDB.ConnectDB;
 import DAO.KhachHang_DAO;
+import DAO.NhanVien_DAO;
 import DAO.TaiKhoan_DAO;
+import Entity.NhanVien;
 import Entity.TaiKhoan;
 
 public class Login {
 
-	private JFrame frame;
+	private JFrame frmngNhp;
 	private JTextField nhapTK;
 	private JPasswordField nhapMK;
 	private JLabel lblNewLabel_2;
 	private JPanel panel;
 	private JLabel lblNewLabel_3;
 	private TaiKhoan_DAO tk_dao;
+	private NhanVien_DAO nv_dao;
 	static String tk;
 	/**
 	 * Launch the application.
@@ -41,7 +44,7 @@ public class Login {
 			public void run() {
 				try {
 					Login window = new Login();
-					window.frame.setVisible(true);
+					window.frmngNhp.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -67,16 +70,18 @@ public class Login {
 			e.printStackTrace();
 		}
 		tk_dao=new TaiKhoan_DAO();
+		nv_dao=new NhanVien_DAO();
 		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 481, 319);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setLocationRelativeTo(null);
+		frmngNhp = new JFrame();
+		frmngNhp.setTitle("Đăng nhập");
+		frmngNhp.setBounds(100, 100, 481, 319);
+		frmngNhp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmngNhp.getContentPane().setLayout(null);
+		frmngNhp.setLocationRelativeTo(null);
 		
 		panel = new JPanel();
 		panel.setBounds(20, 50, 230, 182);
-		frame.getContentPane().add(panel);
+		frmngNhp.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Tài khoản");
@@ -109,14 +114,25 @@ public class Login {
 			public void actionPerformed(ActionEvent e) {
 				List<TaiKhoan> list = tk_dao.getAllTableTaiKhoan();
 				for(TaiKhoan taiKhoan : list) {
-					if(nhapTK.getText().equals(taiKhoan.getTaiKhoan()) && new String(nhapMK.getPassword()).equals(taiKhoan.getMatKhau())) {
-						JOptionPane.showMessageDialog(null,"Đăng nhập thành công");
-						tk = nhapTK.getText();
-						frame.dispose();
-						ThanhToan thanhToan = new ThanhToan();
-						thanhToan.setLocationRelativeTo(null);
-						thanhToan.setVisible(true);
-						return;
+					List<NhanVien> listnv = nv_dao.getAllTableNhanVienByTaiKhoan(taiKhoan.getTaiKhoan());
+					for(NhanVien nv : listnv) {
+						if(nhapTK.getText().equals(taiKhoan.getTaiKhoan()) && new String(nhapMK.getPassword()).equals(taiKhoan.getMatKhau()) && nv.getChucVu().equals("Nhan vien")) {
+							JOptionPane.showMessageDialog(null,"Đăng nhập thành công");
+							tk = nhapTK.getText();
+							frmngNhp.dispose();
+							ThanhToan thanhToan = new ThanhToan();
+							thanhToan.setLocationRelativeTo(null);
+							thanhToan.setVisible(true);
+							return;
+						} else if (nhapTK.getText().equals(taiKhoan.getTaiKhoan()) && new String(nhapMK.getPassword()).equals(taiKhoan.getMatKhau()) && nv.getChucVu().equals("Quan ly")){
+							JOptionPane.showMessageDialog(null,"Đăng nhập thành công");
+							tk = nhapTK.getText();
+							frmngNhp.dispose();
+							ThongKeHoaDon app = new ThongKeHoaDon();
+							app.setLocationRelativeTo(null);
+							app.setVisible(true);
+							return;
+						}
 					}
 				}
 				JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu sai!");
@@ -126,6 +142,6 @@ public class Login {
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/image/loginBackground.jpg")));
 		lblNewLabel_2.setBounds(0, 0, 465, 280);
-		frame.getContentPane().add(lblNewLabel_2);
+		frmngNhp.getContentPane().add(lblNewLabel_2);
 	}
 }

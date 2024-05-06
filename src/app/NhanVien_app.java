@@ -66,6 +66,7 @@ public class NhanVien_app extends JFrame {
 			public void run() {
 				try {
 					NhanVien_app frame = new NhanVien_app();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,6 +79,7 @@ public class NhanVien_app extends JFrame {
 	 * Create the frame.
 	 */
 	public NhanVien_app() {
+		setTitle("Quản lý nhân viên");
 		try {
 			ConnectDB.getInstance().connect();
 			System.out.println("Connected!!");
@@ -119,6 +121,14 @@ public class NhanVien_app extends JFrame {
 		body.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("  Thống kê hóa đơn");
+		lblNewLabel_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ThongKeHoaDon app = new ThongKeHoaDon();
+				app.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setOpaque(true);
 		lblNewLabel_2.setBackground(Color.GRAY);
@@ -128,6 +138,14 @@ public class NhanVien_app extends JFrame {
 		body.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("  Đặt nguyên liệu");
+		lblNewLabel_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DatNguyenLieu app2 = new DatNguyenLieu();
+				app2.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setOpaque(true);
 		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
@@ -350,22 +368,46 @@ public class NhanVien_app extends JFrame {
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnNewButton.setBackground(Color.RED);
-		btnNewButton.setBounds(81, 37, 178, 78);
+		btnNewButton.setBounds(167, 37, 178, 78);
 		panel_5.add(btnNewButton);
 		
 		JButton btnSa = new JButton("Sửa");
+		btnSa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				if(row >= 0) {
+					String temp = modelTable.getValueAt(row, 5).toString();
+					String tk = nhapTK.getText();
+					String mk = nhapMK.getText();
+					TaiKhoan taiKhoan = new TaiKhoan(tk, mk);
+					String ten = nhapTen.getText();
+					String diaChi = nhapDC.getText();
+					String sdt = nhapSDT.getText();
+					double luong = Double.parseDouble(nhapLuong.getText());
+					String chucVu = "Nhan vien";
+					if (quyenQuanLy.isSelected())
+						chucVu = "Quan ly";
+					NhanVien nv = new NhanVien(modelTable.getValueAt(row, 0).toString(),ten,diaChi,sdt,luong,chucVu,taiKhoan);
+					if(!nhapTK.getText().equals(temp)) {
+						tk_dao.insert(taiKhoan);
+						nv_dao.update(nv);
+						tk_dao.delete(temp);
+					} else {
+						nv_dao.update(nv);
+						tk_dao.capNhatPass(tk, mk);
+					}
+					modelTable.setRowCount(0);
+					docDuLieuDatabaseVaoTable();
+				} else {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn trước khi sửa!");
+				}
+			}
+		});
 		btnSa.setForeground(Color.WHITE);
 		btnSa.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnSa.setBackground(Color.RED);
-		btnSa.setBounds(340, 37, 178, 78);
+		btnSa.setBounds(512, 37, 178, 78);
 		panel_5.add(btnSa);
-		
-		JButton btnXa = new JButton("Xóa");
-		btnXa.setForeground(Color.WHITE);
-		btnXa.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnXa.setBackground(Color.RED);
-		btnXa.setBounds(599, 37, 178, 78);
-		panel_5.add(btnXa);
 		
 		docDuLieuDatabaseVaoTable();
 	}

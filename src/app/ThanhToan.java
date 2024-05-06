@@ -92,6 +92,8 @@ public class ThanhToan extends JFrame {
 	private JLabel lblClock;
 	private ChiTietHoaDon_DAO cthd_dao;
 	private The_DAO the_dao;
+	private DefaultTableModel modelTable3;
+	private JTable table3;
 	/**
 	 * Launch the application.
 	 */
@@ -113,6 +115,7 @@ public class ThanhToan extends JFrame {
 	 * Create the frame.
 	 */
 	public ThanhToan() {
+		setTitle("Bán hàng");
 		try {
 			ConnectDB.getInstance().connect();
 			System.out.println("Connected!!");
@@ -178,36 +181,52 @@ public class ThanhToan extends JFrame {
 		lblNewLabel_2.setBounds(0, 11, 388, 52);
 		body.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("  Thêm nước");
-		lblNewLabel_3.setForeground(Color.BLACK);
-		lblNewLabel_3.setOpaque(true);
-		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_3.setBounds(0, 74, 388, 52);
-		body.add(lblNewLabel_3);
-		
 		JLabel lblNewLabel_4 = new JLabel("  Hóa đơn");
+		lblNewLabel_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				HoaDon_app app = new HoaDon_app();
+				app.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
 		lblNewLabel_4.setBackground(Color.GRAY);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_4.setBounds(0, 137, 388, 52);
+		lblNewLabel_4.setBounds(0, 74, 388, 52);
 		body.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("  Khách hàng");
+		lblNewLabel_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				KhachHang_app app1 = new KhachHang_app();
+				app1.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_5.setForeground(Color.BLACK);
 		lblNewLabel_5.setOpaque(true);
 		lblNewLabel_5.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_5.setBounds(0, 200, 388, 52);
+		lblNewLabel_5.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("  Nguyên liệu");
+		lblNewLabel_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NguyenLieu_app app2 = new NguyenLieu_app();
+				app2.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_6.setForeground(Color.BLACK);
 		lblNewLabel_6.setOpaque(true);
 		lblNewLabel_6.setBackground(Color.GRAY);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_6.setBounds(0, 263, 388, 52);
+		lblNewLabel_6.setBounds(0, 200, 388, 52);
 		body.add(lblNewLabel_6);
 		
 		JPanel foot = new JPanel();
@@ -731,6 +750,14 @@ public class ThanhToan extends JFrame {
             }
 		};
 		
+		String[] colHeader3 = { "Mã đồ uống", "Tên đồ uống", "Giá tiền"};
+		modelTable3 = new DefaultTableModel(colHeader3, 0) {
+			@Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+		};
+		
 		table = new JTable(modelTable);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -758,7 +785,7 @@ public class ThanhToan extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane2 = new JScrollPane();
-		tabbedPane.addTab("Non-Coffee", null, scrollPane2, null);
+		tabbedPane.addTab("Smoothie", null, scrollPane2, null);
 		
 		table2 = new JTable(modelTable2);
 		table2.addMouseListener(new MouseAdapter() {
@@ -786,6 +813,35 @@ public class ThanhToan extends JFrame {
 		});
 		scrollPane2.setViewportView(table2);
 		
+		JScrollPane scrollPane3 = new JScrollPane();
+		tabbedPane.addTab("Tea", null, scrollPane3, null);
+		
+		table3 = new JTable(modelTable3);
+		table3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+					int row = table3.getSelectedRow();
+					for(int i = 0;i<modelTable_1.getRowCount();i++) {
+						if(String.valueOf(modelTable3.getValueAt(row, 1)).equalsIgnoreCase(String.valueOf(modelTable_1.getValueAt(i, 0)))) {
+							JOptionPane.showMessageDialog(null, "Món đã tồn tại trong giỏ hàng");
+							return;
+						}
+					}
+					String soLuong;
+					do {
+						soLuong = JOptionPane.showInputDialog("Hãy nhập số lượng");
+						if(!soLuong.matches("[0-9]+")) {
+							JOptionPane.showMessageDialog(null, "Số lượng chỉ được là số. Hãy nhập lại!");
+						}
+					} while(!soLuong.matches("[0-9]+"));
+					modelTable_1.addRow(new Object[] {modelTable3.getValueAt(row,1),modelTable3.getValueAt(row,2),soLuong,Integer.parseInt(soLuong)*Double.parseDouble(String.valueOf(modelTable3.getValueAt(row,2)))});
+					capNhatDuLieu();
+				}
+			}
+		});
+		scrollPane3.setViewportView(table3);
+		
 		table.getTableHeader().setResizingAllowed(false);
         table.getTableHeader().setReorderingAllowed(false);
         table.setFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 15));
@@ -810,6 +866,18 @@ public class ThanhToan extends JFrame {
 		});
 		table2.setRowHeight(table2.getRowHeight()+10);
 		
+		table3.getTableHeader().setResizingAllowed(false);
+        table3.getTableHeader().setReorderingAllowed(false);
+        table3.setFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 15));
+		scrollPane3.setColumnHeader(new JViewport() {
+			@Override public Dimension getPreferredSize() {
+				Dimension d = super.getPreferredSize();
+				d.height = 32;
+				return d;
+			}
+		});
+		table3.setRowHeight(table3.getRowHeight()+10);
+		
 		JPanel panel_6 = new JPanel();
 		panel_6.setBounds(388, 667, 1031, 77);
 		panel_1.add(panel_6);
@@ -820,6 +888,15 @@ public class ThanhToan extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(nhapTongTien.getText().equals("0.0") || nhapTongTien.getText().trim().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Chưa có món để tạo hóa đơn!");
+					return;
+				} else if (nhapSDT.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "Vui lòng nhập số điện thoại , nếu chưa có xin hãy tạo");
+					nhapSDT.requestFocus();
+					return;
+				} else if (nhapTienDua.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "Nhập số tiền khách đưa!");
+					nhapTienDua.requestFocus();
+					return;
 				} else {
 					try {
 						hoaDon.setText("--------------------------------------\n");
@@ -916,8 +993,10 @@ public class ThanhToan extends JFrame {
 		for (DoUong du: list) {
 			if(du.getLoaiDoUong().equalsIgnoreCase("Coffee")) {
 				modelTable.addRow(new Object[] {du.getMaDoUong(),du.getTenDoUong(),du.getGiaTien()});
-			} else if(du.getLoaiDoUong().equalsIgnoreCase("Non-Coffee")) {
+			} else if(du.getLoaiDoUong().equalsIgnoreCase("Smoothie")) {
 				modelTable2.addRow(new Object[] {du.getMaDoUong(),du.getTenDoUong(),du.getGiaTien()});
+			} else if(du.getLoaiDoUong().equalsIgnoreCase("Tea")) {
+				modelTable3.addRow(new Object[] {du.getMaDoUong(),du.getTenDoUong(),du.getGiaTien()});
 			}
 		}
 	}

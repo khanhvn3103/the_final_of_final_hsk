@@ -80,6 +80,7 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public NguyenLieu_app() {
+		setTitle("Quản lí nguyên liệu");
 		try {
 			ConnectDB.getInstance().connect();
 			System.out.println("Connected!!");
@@ -121,6 +122,14 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 		body.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("  Bán hàng");
+		lblNewLabel_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ThanhToan app = new ThanhToan();
+				app.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setOpaque(true);
 		lblNewLabel_2.setBackground(Color.GRAY);
@@ -129,28 +138,36 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 		lblNewLabel_2.setBounds(0, 11, 388, 52);
 		body.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("  Thêm nước");
-		lblNewLabel_3.setForeground(Color.BLACK);
-		lblNewLabel_3.setOpaque(true);
-		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_3.setBounds(0, 74, 388, 52);
-		body.add(lblNewLabel_3);
-		
 		JLabel lblNewLabel_4 = new JLabel("  Hóa đơn");
+		lblNewLabel_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				HoaDon_app app1 = new HoaDon_app();
+				app1.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
 		lblNewLabel_4.setBackground(Color.GRAY);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_4.setBounds(0, 137, 388, 52);
+		lblNewLabel_4.setBounds(0, 74, 388, 52);
 		body.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_5 = new JLabel("  Khách hàng");
+		lblNewLabel_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				KhachHang_app app2 = new KhachHang_app();
+				app2.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_5.setForeground(Color.BLACK);
 		lblNewLabel_5.setOpaque(true);
 		lblNewLabel_5.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_5.setBounds(0, 200, 388, 52);
+		lblNewLabel_5.setBounds(0, 137, 388, 52);
 		body.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("  Nguyên liệu");
@@ -158,7 +175,7 @@ public class NguyenLieu_app extends JFrame implements ActionListener {
 		lblNewLabel_6.setOpaque(true);
 		lblNewLabel_6.setBackground(Color.GRAY);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_6.setBounds(0, 263, 388, 52);
+		lblNewLabel_6.setBounds(0, 200, 388, 52);
 		body.add(lblNewLabel_6);
 		
 		JPanel foot = new JPanel();

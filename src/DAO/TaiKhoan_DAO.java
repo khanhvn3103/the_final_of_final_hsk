@@ -55,4 +55,47 @@ public class TaiKhoan_DAO {
 		}
 		return n>0;
 	}
+	
+	public boolean delete(String tk) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n =0;
+		try {
+			stmt = con.prepareStatement("delete from TAIKHOAN where tenTK = ?");
+			stmt.setString(1, tk);
+			n = stmt.executeUpdate();
+		} catch(SQLException e) {
+			throw new IllegalArgumentException(e);
+		} finally {
+			try {
+				stmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return n>0;
+	}
+	
+	public boolean capNhatPass(String tk,String mk) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n =0;
+		try {
+			stmt = con.prepareStatement("update TAIKHOAN set matKhau = ? where tenTK = ?");
+			stmt.setString(1, mk);
+			stmt.setString(2, tk);
+			n = stmt.executeUpdate();
+		} catch(SQLException e) {
+			throw new IllegalArgumentException(e);
+		} finally {
+			try {
+				stmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return n>0;
+	}
 }

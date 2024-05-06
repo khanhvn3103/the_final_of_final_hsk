@@ -68,6 +68,7 @@ public class ThongKeHoaDon extends JFrame {
 			public void run() {
 				try {
 					ThongKeHoaDon frame = new ThongKeHoaDon();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -80,6 +81,7 @@ public class ThongKeHoaDon extends JFrame {
 	 * Create the frame.
 	 */
 	public ThongKeHoaDon() {
+		setTitle("Quản lí hóa đơn");
 		try {
 			ConnectDB.getInstance().connect();
 			System.out.println("Connected!!");
@@ -130,6 +132,14 @@ public class ThongKeHoaDon extends JFrame {
 		body.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("  Đặt nguyên liệu");
+		lblNewLabel_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DatNguyenLieu app = new DatNguyenLieu();
+				app.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setOpaque(true);
 		lblNewLabel_3.setBackground(Color.LIGHT_GRAY);
@@ -138,6 +148,14 @@ public class ThongKeHoaDon extends JFrame {
 		body.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_4 = new JLabel("  Tài khoản nhân viên");
+		lblNewLabel_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NhanVien_app app2 = new NhanVien_app();
+				app2.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
 		lblNewLabel_4.setBackground(Color.GRAY);

@@ -66,29 +66,55 @@ public class ChiTietHoaDon_DAO {
 		return dscthd;
 	}
 	
-	public ArrayList<ChiTietHoaDon> search(String hd,String du) {
+	public ArrayList<ChiTietHoaDon> search(String hd,String du,String hd1) {
 	    ArrayList<ChiTietHoaDon> dscthd = new ArrayList<ChiTietHoaDon>();
 	    try {
 	        ConnectDB.getInstance();
 	        Connection con = ConnectDB.getConnection();
-	        String sql = "SELECT * FROM CHITIETHOADON WHERE (maHoaDon = ? OR ? = '') AND (maDoUong = ? OR ? = '')";
+	        String sql = "SELECT * FROM CHITIETHOADON WHERE (maHoaDon = ? OR ? = '') AND (maDoUong = ? OR ? = '') AND maHoaDon = ?";
 	        PreparedStatement statement = con.prepareStatement(sql);
 	        statement.setString(1, hd);
 	        statement.setString(2, (hd == null) ? "" : hd);
 	        statement.setString(3, du);
 	        statement.setString(4, (du == null) ? "" : du);
+	        statement.setString(5, hd1);
 	        ResultSet rs = statement.executeQuery();
 	        while (rs.next()) {
-	            HoaDon hd1 = new HoaDon(rs.getString(1));
+	            HoaDon hd2 = new HoaDon(rs.getString(1));
 	            DoUong du1 = new DoUong(rs.getString(2));
 	            int sl = rs.getInt(3);
 	            double donGia = rs.getDouble(4);
-	            ChiTietHoaDon cthd = new ChiTietHoaDon(hd1, du1, sl, donGia);
+	            ChiTietHoaDon cthd = new ChiTietHoaDon(hd2, du1, sl, donGia);
 	            dscthd.add(cthd);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	    return dscthd;
+	}
+	
+	public ArrayList<ChiTietHoaDon> getAllTableChiTietHoaDonByHoaDon(String hd1) {
+		ArrayList<ChiTietHoaDon> dscthd = new ArrayList<ChiTietHoaDon>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "select * from CHITIETHOADON where maHoaDon = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+	        statement.setString(1, hd1);
+			//thuc thi cau lenh sql tra ve doi tuong result
+	        ResultSet rs = statement.executeQuery();
+			//duyet tren ket qua tra ve
+			while(rs.next()) {
+				HoaDon hd = new HoaDon(rs.getString(1));
+				DoUong du = new DoUong(rs.getString(2));
+				int soL= rs.getInt(3);
+				double donGia = rs.getDouble(4);
+				ChiTietHoaDon cthd = new ChiTietHoaDon(hd, du, soL, donGia);
+				dscthd.add(cthd);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return dscthd;
 	}
 }

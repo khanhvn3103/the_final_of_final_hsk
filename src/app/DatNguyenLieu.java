@@ -56,6 +56,7 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					DatNguyenLieu frame = new DatNguyenLieu();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,6 +69,7 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public DatNguyenLieu() {
+		setTitle("Đặt nguyên liệu");
 		try {
 			ConnectDB.getInstance().connect();
 			System.out.println("Connected!!");
@@ -107,6 +109,14 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 		body.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("  Thống kê hóa đơn");
+		lblNewLabel_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ThongKeHoaDon app = new ThongKeHoaDon();
+				app.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setOpaque(true);
 		lblNewLabel_2.setBackground(Color.GRAY);
@@ -124,6 +134,14 @@ public class DatNguyenLieu extends JFrame implements ActionListener {
 		body.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("  Tài khoản nhân viên");
+		lblNewLabel_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NhanVien_app app2 = new NhanVien_app();
+				app2.setVisible(true);
+				dispose();
+			}
+		});
 		lblNewLabel_4.setForeground(Color.BLACK);
 		lblNewLabel_4.setOpaque(true);
 		lblNewLabel_4.setBackground(Color.GRAY);
