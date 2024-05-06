@@ -199,3 +199,7 @@ VALUES
     ('HD005', 'DU002', 1, 35000),
     ('HD005', 'DU003', 2, 80000);
 
+create trigger updateDiem
+on HOADON
+for insert as
+	update KHACHHANG set diemTichLuy=diemTichLuy + (select FLOOR(tongTien/10000) from inserted) where maKhachHang = (select maKhachHang from inserted)
