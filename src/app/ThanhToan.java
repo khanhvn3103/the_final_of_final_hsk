@@ -897,7 +897,11 @@ public class ThanhToan extends JFrame {
 					JOptionPane.showMessageDialog(null, "Nhập số tiền khách đưa!");
 					nhapTienDua.requestFocus();
 					return;
-				} else {
+				} else if (Double.parseDouble(nhapTienThoi.getText())< 0) {
+					JOptionPane.showMessageDialog(null, "Tiền khách đưa thiếu!");
+					nhapTienDua.requestFocus();
+					return;
+				}else {
 					try {
 						hoaDon.setText("--------------------------------------\n");
 						hoaDon.setText(hoaDon.getText() + "-              Coffee ABC            -\n");
@@ -961,7 +965,14 @@ public class ThanhToan extends JFrame {
 						double donGia = Double.parseDouble(modelTable_1.getValueAt(i, 1).toString());
 						ChiTietHoaDon ct = new ChiTietHoaDon(hd1, dU1, soL,donGia);
 						cthd_dao.insert(ct);
+						the_dao.capNhat(theRung.getSelectedItem().toString());
 						reset();
+						theRung.removeAllItems();;
+						ArrayList<The> listT = the_dao.getAllTableThe();
+						for (The t : listT) {
+							if(t.getTinhTrang().equals("Trong"))
+								theRung.addItem(t.getSoThe());
+						}
 					}
 				}
 			}
